@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace OrderMonitor
 {
-    class Item
+    public class Item
     {
+        public string Description { get; set; }
+        public double Value { get; set; }
+        public float Weight { get; set; }
+        public string Currency { get; set; }
+        public int Quantity { get; set; }
     }
 }

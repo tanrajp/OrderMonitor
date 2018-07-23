@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace OrderMonitor
 {
-    class Parcel
+    public class Parcel
     {
+        public string ParcelCode { get; set; }
+        public IList<Item> Items { get; set; }
+
+        public Parcel()
+        {
+            Items = new List<Item>();
+        }
     }
 }
