@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsvHelper.Configuration;
+using OrderMonitor.RowPart;
 
 namespace OrderMonitor
 {
@@ -53,6 +55,15 @@ namespace OrderMonitor
         public Order()
         {
             Consignments = new List<Consignment>();
+        }
+    }
+
+    public class OrderMap : ClassMap<Order>
+    {
+        public OrderMap()
+        {
+            Map(x => x.OrderNo).Name("Order No");
+            Map(x => x.Consignments).Ignore();
         }
     }
 }
