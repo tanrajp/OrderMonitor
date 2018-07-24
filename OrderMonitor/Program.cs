@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using System.IO;
 using System.Globalization;
+using System.Xml;
 using CsvHelper;
 using CsvHelper.Configuration;
 using OrderMonitor.RowPart;
@@ -97,7 +98,9 @@ namespace OrderMonitor
     {
         public static void Main(string[] args)
         {
-            using(StreamReader streamReader = File.OpenText(@"D:\Documents\test.csv"))
+            var orders = new List<Order>();
+
+            using (StreamReader streamReader = File.OpenText(@"D:\Documents\test.csv"))
             {
                 var config = new CsvHelper.Configuration.Configuration();
                 config.HasHeaderRecord = true;
@@ -105,8 +108,7 @@ namespace OrderMonitor
                 config.RegisterClassMap<RowMap>();
                 
                 var csv = new CsvReader(streamReader, config);
-                var orders = new List<Order>();
-
+                
                 var currentRow = new Row();
                 var currentOrder = new Order();
 
@@ -151,7 +153,27 @@ namespace OrderMonitor
                         }
                     }
                 }
+
             }
+
+
+            using(XmlWriter writer = XmlWriter.Create(@"D:\Documents\test.xml"))
+            {
+                writer.WriteStartDocument();
+                writer.WriteStartElement("Orders");
+
+                foreach(var order in orders)
+                {
+                    order.CreateNode(writer);
+                }
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
+
+            
+
+            Console.Read();
         }
     }
 }

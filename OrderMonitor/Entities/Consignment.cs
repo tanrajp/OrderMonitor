@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
 using OrderMonitor.RowPart;
+using System.Xml;
 
 namespace OrderMonitor
 {
-    public class Consignment
+    public class Consignment: IOutputXML
     {
         public string ConsignmentNo { get; set; }
         public string ConsigneeName { get; set; }
@@ -22,6 +23,26 @@ namespace OrderMonitor
         public Consignment()
         {
             Parcels = new List<Parcel>();
+        }
+
+        public void CreateNode(XmlWriter writer)
+        {
+            writer.WriteStartElement("Consignment");
+            writer.WriteElementString("ConsignmentNo", ConsignmentNo);
+            writer.WriteElementString("ConsigneeName", ConsigneeName);
+            writer.WriteElementString("Address1", Address1);
+            writer.WriteElementString("Address2", Address2);
+            writer.WriteElementString("City", City);
+            writer.WriteElementString("State", State);
+            writer.WriteElementString("CountryCode", CountryCode);
+
+            writer.WriteStartElement("Parcels");
+            foreach(var parcel in Parcels)
+            {
+                parcel.CreateNode(writer);
+            }
+            writer.WriteEndElement();
+            writer.WriteEndElement();
         }
     }
 

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
+using System.Xml;
 using OrderMonitor.RowPart;
 
 namespace OrderMonitor
 {
-    public class Order
+    public class Order : IOutputXML
     {
         public string OrderNo { get; set; }
         public IList<Consignment> Consignments { get; set; }
@@ -55,6 +56,23 @@ namespace OrderMonitor
         public Order()
         {
             Consignments = new List<Consignment>();
+        }
+
+        public void CreateNode(XmlWriter writer)
+        {
+            writer.WriteStartElement("Order");
+            writer.WriteElementString("OrderNo", OrderNo);
+            writer.WriteElementString("TotalValue", TotalValue.ToString());
+            writer.WriteElementString("TotalWeight", TotalWeight.ToString());
+
+            writer.WriteStartElement("Consignments");
+            foreach(var cons in Consignments)
+            {
+                cons.CreateNode(writer);
+            }
+
+            writer.WriteEndElement();
+            writer.WriteEndElement();
         }
     }
 
