@@ -19,7 +19,7 @@ namespace OrderMonitor.Interfaces
     }
 
 
-    public class CSVOrderParse : IOrderParser
+    public class CSVOrderParser : IOrderParser
     {
         public IList<Order> ReadOrders(string fileName)
         {

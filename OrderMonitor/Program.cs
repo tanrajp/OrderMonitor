@@ -10,6 +10,7 @@ using System.Xml;
 using CsvHelper;
 using CsvHelper.Configuration;
 using OrderMonitor.RowPart;
+using OrderMonitor.Interfaces;
 
 namespace OrderMonitor
 {
@@ -98,9 +99,17 @@ namespace OrderMonitor
     {
         public static void Main(string[] args)
         {
+            if (args.Length != 1)
+            {
+                Console.WriteLine(@"Usage: OrderMonitor.exe ""C:\test""");
+                return;
+            }
 
+            var fileWatcher = new FileWatcher(new CSVOrderParser(), new XmlOrderOutputter());
+            fileWatcher.WatchForOrders(args[0]);
 
-            Console.Read();
+            Console.WriteLine("Press \'q\' to quit.");
+            while (Console.Read() != 'q') ;
         }
     }
 }

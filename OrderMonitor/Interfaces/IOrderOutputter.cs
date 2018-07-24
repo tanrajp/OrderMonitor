@@ -10,23 +10,14 @@ namespace OrderMonitor.Interfaces
 {
     public interface IOrderOutputter
     {
-        void CreateDocument(IList<Order> orders);
+        void CreateDocument(IList<Order> orders, string directory, string filename);
     }
 
     public class XmlOrderOutputter : IOrderOutputter
     {
-        private string directory;
-        private string fileName;
-
-        public XmlOrderOutputter(string directory, string fileName)
+        public void CreateDocument(IList<Order> orders, string directory, string filename)
         {
-            this.directory = directory;
-            this.fileName = fileName;
-        }
-
-        public void CreateDocument(IList<Order> orders)
-        {
-            using (XmlWriter writer = XmlWriter.Create($"{directory}\\{fileName}.xml"))
+            using (XmlWriter writer = XmlWriter.Create($"{directory}\\{filename}.xml"))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Orders");
